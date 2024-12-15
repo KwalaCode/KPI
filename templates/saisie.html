@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saisie des KPI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Saisie des KPI</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Accueil</a></li>
+                <li><a href="{{ url_for('visualisation') }}">Visualisation</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <form id="kpi-form">
+            <label for="date">Date :</label>
+            <input type="date" id="date" name="date" required>
+            
+            <label for="temps_livraison">Temps de livraison (heures) :</label>
+            <input type="number" id="temps_livraison" name="temps_livraison" step="0.01" required>
+            
+            <label for="taux_service">Taux de service (%) :</label>
+            <input type="number" id="taux_service" name="taux_service" step="0.01" min="0" max="100" required>
+            
+            <label for="niveau_stock">Niveau de stock :</label>
+            <input type="number" id="niveau_stock" name="niveau_stock" step="0.01" required>
+            
+            <button type="submit">Enregistrer</button>
+        </form>
+        
+        <h2>Importer des données</h2>
+        <form id="import-form" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".csv">
+            <button type="submit">Importer</button>
+        </form>
+    </main>
+    
+    <script src="{{ url_for('static', filename='js/saisie.js') }}"></script>
+</body>
+</html>
+

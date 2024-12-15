@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi des KPI Logistiques</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Suivi des KPI Logistiques</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('saisie') }}">Saisie des données</a></li>
+                <li><a href="{{ url_for('visualisation') }}">Visualisation</a></li>
+                <li><a href="{{ url_for('generer_rapport') }}">Générer un rapport</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Bienvenue sur l'outil de suivi des KPI logistiques</h2>
+        <p>Utilisez les liens de navigation pour accéder aux différentes fonctionnalités.</p>
+    </main>
+</body>
+</html>
+

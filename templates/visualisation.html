@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisation des KPI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Visualisation des KPI</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Accueil</a></li>
+                <li><a href="{{ url_for('saisie') }}">Saisie des données</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main id="main-content">
+        <div class="chart-container">
+            <canvas id="tempsLivraisonChart" aria-label="Graphique du temps de livraison"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="tauxServiceChart" aria-label="Graphique du taux de service"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="niveauStockChart" aria-label="Graphique du niveau de stock"></canvas>
+        </div>
+    </main>
+    
+    <script>
+        // Wrap the kpis data in a try-catch block to handle potential JSON parsing errors
+        let kpis;
+        try {
+            kpis = JSON.parse('{{ kpis|tojson|safe }}');
+        } catch (error) {
+            console.error('Error parsing KPI data:', error);
+            kpis = [];
+        }
+        
+        const chartConfigs = [
+            { id: 'tempsLivraisonChart', label: 'Temps de livraison', dataKey: 'temps_livraison' },
+            { id: 'tauxServiceChart', label: 'Taux de service', dataKey: 'taux_service' },
+            { id: 'niveauStockChart', label: 'Niveau de stock', dataKey: 'niveau_stock' }
+        ];
+
+        function createChart(canvasId, label, data) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(kpi => kpi.date),
+                    datasets: [{
+                        label: label,
+                        data: data.map(kpi => kpi[label.toLowerCase().replace(/ /g, '_')]),
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function displayCharts() {
+            if (kpis && Array.isArray(kpis) && kpis.length > 0) {
+                chartConfigs.forEach(config => {
+                    createChart(config.id, config.label, kpis);
+                });
+            } else {
+                document.getElementById('main-content').innerHTML = '<p>Aucune donnée disponible pour afficher les graphiques.</p>';
+            }
+        }
+
+        // Call the function to display charts when the page loads
+        window.addEventListener('load', displayCharts);
+    </script>
+</body>
+</html>
+
